@@ -8,7 +8,7 @@ set(CMAKE_TOOLCHAIN_FILE ${CMAKE_SOURCE_DIR}/toolchain.cmake)                   
 ###############################################################################
 project(main)                                                                                   #@application specific: project name
 set(EXECUTABLE ${PROJECT_NAME}.elf)                                                             #Output executable name
-set(LINKER_FILE ${CMAKE_SOURCE_DIR}/drivers/STM32F411CEUX_FLASH.ld)                             #@application specific:Linker script file
+set(LINKER_FILE ${CMAKE_SOURCE_DIR}/drivers/hardware/STM32F411CEUX_FLASH.ld)                             #@application specific:Linker script file
 
 ###############################################################################
 # LANGUAGE CONFIG
@@ -30,10 +30,19 @@ set(DRIVERS_DIR "drivers/")
 set(MIDDLEWARES_DIR "middlewares/")
 set(HAL_DIR "HAL/")
 set(BSP_DIR "board_support/")
+
+set(CMSIS_DIR ${HAL_DIR}CMSIS/)
+set(CONFIG_DIR ${DRIVERS_DIR}configuration/)
+set(HARDWARE_DIR ${DRIVERS_DIR}hardware/)
+
 set(SRC_FILES
-        ${APP_SRC_DIR}startup_stm32f411ceux.s
+        ${HARDWARE_DIR}startup_stm32f411ceux.s
+        ${HARDWARE_DIR}system_stm32f4xx.c
         ${APP_SRC_DIR}main.c
-        ${DRIVERS_DIR}system_stm32f4xx.c
+        ${APP_SRC_DIR}irq.c
+        ${DRIVERS_DIR}gpio.c
+        ${DRIVERS_DIR}common.c
+        ${CONFIG_DIR}gpio_config.c 
         )
 
 # Build the executable based on the source files
@@ -51,14 +60,15 @@ target_compile_definitions(${EXECUTABLE} PRIVATE
 ###############################################################################
 # INCLUDES
 ###############################################################################
-set(CMSIS_DIR ${HAL_DIR}CMSIS/)
 target_include_directories(${EXECUTABLE} PRIVATE
         ${APP_DIR}
-        ${CMSIS_DIR}
-        ${MIDDLEWARES_DIR}
         ${DRIVERS_DIR}
-        ${BSP_DIR}
+        ${MIDDLEWARES_DIR}
         ${HAL_DIR}
+        ${BSP_DIR}
+        ${CMSIS_DIR}
+        ${CONFIG_DIR}
+        ${HARDWARE_DIR}
         )
 
 ###############################################################################
