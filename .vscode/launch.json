@@ -31,7 +31,7 @@
             //start debug at beginning og main function
             "runToMain": true,
             //filepath of System Viewer file
-            "svdFile": "${workspaceRoot}/drivers/STM32F411.svd",
+            "svdFile": "${workspaceRoot}/drivers/hardware/STM32F411.svd",
             //"rtos": "GDBServer/RTOSPlugin_FreeRTOS",
             "swoConfig": 
             {
